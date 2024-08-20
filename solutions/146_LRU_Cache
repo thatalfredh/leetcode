@@ -1,0 +1,33 @@
+class LRUCache:
+
+    def __init__(self, capacity: int):
+        self.cap = capacity
+        self.map = {}
+        self.cache = []
+
+    def get(self, key: int) -> int:
+        if key in self.map.keys(): # O(1) 
+            # push to front
+            self.cache.remove(key)
+            self.cache.append(key)
+            return self.map[key]
+        else:
+            return -1
+        
+    def put(self, key: int, value: int) -> None:
+
+        if key in self.map.keys():
+            # already exists, push to front
+            self.cache.remove(key)
+        else:
+            if len(self.cache) == self.cap:
+                # max capacity, need to remove LRU key
+                lru_key = self.cache.pop(0)
+                self.map.pop(lru_key)
+        self.cache.append(key)
+        self.map[key] = value
+
+# Your LRUCache object will be instantiated and called as such:
+# obj = LRUCache(capacity)
+# param_1 = obj.get(key)
+# obj.put(key,value)
